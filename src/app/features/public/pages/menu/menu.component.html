@@ -1,0 +1,40 @@
+<section class="menu-hero">
+  <div class="content">
+    <h1>Our Menu</h1>
+    <p>Explore authentic Malvani flavours – seafood, chicken, veg & beverages.</p>
+  </div>
+</section>
+
+<section class="section">
+  <!-- Category Filter -->
+  <div class="filters">
+    <button
+      class="chip"
+      [class.active]="selectedCategory === 'All'"
+      (click)="selectCategory('All')"
+    >
+      All
+    </button>
+
+    <button
+      class="chip"
+      *ngFor="let cat of categories"
+      [class.active]="selectedCategory === cat"
+      (click)="selectCategory(cat)"
+    >
+      {{ cat }}
+    </button>
+  </div>
+
+  <!-- Dish Cards -->
+  <div class="dish-grid">
+    <div class="dish-card" *ngFor="let dish of filteredDishes">
+      <div class="top">
+        <h3>{{ dish.name }}</h3>
+        <span class="price">{{ dish.price }}</span>
+      </div>
+      <p>{{ dish.desc }}</p>
+      <span class="tag">{{ dish.category }}</span>
+    </div>
+  </div>
+</section>
