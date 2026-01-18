@@ -1,17 +1,15 @@
 <div class="menu-form-wrapper">
+
   <!-- Title -->
   <div class="title-bar">
     <div>
       <h2>Menu Master Form</h2>
-      <p>Create / Update Menu Item</p>
+      <p>{{ isEditMode() ? 'Update Menu Item' : 'Create Menu Item' }}</p>
     </div>
 
     <button class="btn-orange" routerLink="/admin/menu-master">
       ← Back to List
     </button>
-    <!-- <button class="btn-" routerLink="/admin/menu-master/add">
-      + Add Menu
-    </button> -->
   </div>
 
   <!-- Card -->
@@ -22,14 +20,15 @@
     </div>
 
     <form [formGroup]="menuForm" (ngSubmit)="submit()">
+
       <div class="card-body">
+
         <!-- Row 1 -->
         <div class="row">
           <div class="col">
             <label>Menu Name</label>
             <input type="text" formControlName="name" placeholder="Enter menu name" />
-            <small class="error"
-              *ngIf="menuForm.get('name')?.touched && menuForm.get('name')?.invalid">
+            <small class="error" *ngIf="menuForm.get('name')?.touched && menuForm.get('name')?.invalid">
               Name is required
             </small>
           </div>
@@ -43,8 +42,7 @@
               <option>Main Course</option>
               <option>Dessert</option>
             </select>
-            <small class="error"
-              *ngIf="menuForm.get('category')?.touched && menuForm.get('category')?.invalid">
+            <small class="error" *ngIf="menuForm.get('category')?.touched && menuForm.get('category')?.invalid">
               Category is required
             </small>
           </div>
@@ -55,8 +53,7 @@
           <div class="col">
             <label>Price (₹)</label>
             <input type="number" formControlName="price" placeholder="Enter price" />
-            <small class="error"
-              *ngIf="menuForm.get('price')?.touched && menuForm.get('price')?.invalid">
+            <small class="error" *ngIf="menuForm.get('price')?.touched && menuForm.get('price')?.invalid">
               Price is required
             </small>
           </div>
@@ -70,22 +67,24 @@
           </div>
         </div>
 
-        <!-- Full Width -->
+        <!-- Full -->
         <div class="row">
           <div class="col full">
             <label>Description</label>
             <textarea formControlName="description" placeholder="Enter description"></textarea>
           </div>
         </div>
+
       </div>
 
       <!-- Footer -->
       <div class="card-footer">
-        <button type="reset" class="btn-gray">Reset</button>
+        <button type="button" class="btn-gray" (click)="resetForm()">Reset</button>
         <button type="submit" class="btn-orange" [disabled]="menuForm.invalid">
-          Save Menu
+          {{ isEditMode() ? 'Update Menu' : 'Save Menu' }}
         </button>
       </div>
+
     </form>
   </div>
 </div>

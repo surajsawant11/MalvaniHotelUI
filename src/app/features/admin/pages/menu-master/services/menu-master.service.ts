@@ -1,27 +1,39 @@
 import { Injectable } from '@angular/core';
-// import { ApiService } from ;
-import { MenuItem } from '../model/menu-master.model';
+import { Observable } from 'rxjs';
+
 import { ApiService } from '../../../../../core/services/api.service';
+import { MenuItem } from '../model/menu-master.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuMasterService {
-  deleteMenu(menuId: number) {
-    return this.api.delete<(string)>(`/menu/${menuId}`);
+
+  constructor(private api: ApiService) {}
+
+  // ✅ Get all menu items
+  getAllMenu(): Observable<MenuItem[]> {
+    return this.api.get<MenuItem[]>('/menu');
   }
 
-  constructor( private api : ApiService) { }
-
-  getAllMenu(){
-    return this.api.get<(MenuItem[])>('/menu');
+  // ✅ Save new menu item
+  saveMenu(menu: MenuItem): Observable<any> {
+    return this.api.post<any>('/menu/save', menu);
   }
 
-  saveMenu(menu : MenuItem){
-    return this.api.post<any>('/menu/save',menu);
+  // ✅ Update menu item
+  updateMenu(menuId: number, menu: Partial<MenuItem>): Observable<any> {
+    return this.api.put<any>(`/menu/${menuId}`, menu);
+    // if backend uses /menu/update then replace endpoint accordingly
   }
 
-  findById(menuId : number){
-    return this.api.get<any>(`/menu/${menuId}`);
+  // ✅ Find menu by id
+  findById(menuId: number): Observable<MenuItem> {
+    return this.api.get<MenuItem>(`/menu/${menuId}`);
+  }
+
+  // ✅ Delete menu
+  deleteMenu(menuId: number): Observable<any> {
+    return this.api.delete<any>(`/menu/${menuId}`);
   }
 }

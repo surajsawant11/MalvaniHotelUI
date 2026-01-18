@@ -27,25 +27,27 @@
       </thead>
 
       <tbody>
-        <!-- <tr *ngFor="let menu of menuList; let i = index">
+         <tr *ngFor="let user of userList(); let i = index">
           <td>{{ i + 1 }}</td>
-           <td>{{ menu.menuId }}</td>
-          <td class="name">{{ menu.name }}</td>
-          <td>{{ menu.category }}</td>
-          <td class="desc">{{ menu.description || '-' }}</td>
-          <td class="price">₹{{ menu.price }}</td>
-          <td >{{ menu.status }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.role }}</td>
+          <td >{{ user.createdBy }}</td>
+          <td >{{ user.createdDt | date:'short'}}</td>
+          <td >{{ user.updatedBy}}</td>
+          <td >{{ user.updatedDt | date:'short'}}</td>
 
           <td class="text-center">
-            <button class="btn-action btn-edit" (click)="onEdit(menu.menuId)">
+            <button class="btn-action btn-edit" (click)="onEdit(user.userId)">
               Edit
             </button>
 
-            <button class="btn-action btn-delete" (click)="onDelete(menu.menuId)">
+            <button class="btn-action btn-delete" (click)="onDelete(user.userId)">
               Remove
             </button>
           </td>
-        </tr> -->
+        </tr> 
       </tbody>
     </table>
   </div>

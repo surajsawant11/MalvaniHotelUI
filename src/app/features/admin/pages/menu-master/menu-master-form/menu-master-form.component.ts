@@ -1,30 +1,58 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MenuMasterService } from '../services/menu-master.service';
 import Swal from 'sweetalert2';
+
+import { MenuMasterService } from '../services/menu-master.service';
 
 @Component({
   selector: 'app-menu-master-form',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf,RouterLink],
+  imports: [ReactiveFormsModule, NgIf, RouterLink],
   templateUrl: './menu-master-form.component.html',
   styleUrl: './menu-master-form.component.css'
 })
 export class MenuMasterFormComponent implements OnInit {
-  private editId :any;
-  private editFlag:boolean = false;
 
-  constructor(private fb : FormBuilder, private menuService : MenuMasterService, private activatedRoute : ActivatedRoute){}
+  // ✅ Signals
+  editId = signal<number | null>(null);
+  isEditMode = signal<boolean>(false);
+  isLoading = signal<boolean>(false);
+
+  constructor(
+    private fb: FormBuilder,
+    private menuService: MenuMasterService,
+    private route: ActivatedRoute
+  ) {}
+
+  // ✅ Reactive Form
+  menuForm = this.fb.group({
+    menuId: [null],
+    name: ['', Validators.required],
+    category: ['', Validators.required],
+    description: [''],
+    price: [null, Validators.required],
+    status: ['ACTIVE', Validators.required]
+  });
 
   ngOnInit(): void {
-    this.editId = this.activatedRoute.snapshot.paramMap.get('id');
-    if(this.editId){
-      this.editFlag = true;
-      this.menuService.findById(this.editId).subscribe({
-        next :(res)=>{
-          this.menuForm.patchValue({
+    const idParam = this.route.snapshot.paramMap.get('id');
+
+    if (idParam) {
+      const id = Number(idParam);
+      this.editId.set(id);
+      this.isEditMode.set(true);
+      this.loadMenuById(id);
+    }
+  }
+
+  private loadMenuById(id: number): void {
+    this.isLoading.set(true);
+
+    this.menuService.findById(id).subscribe({
+      next: (res: any) => {
+        this.menuForm.patchValue({
           menuId: res?.menuId,
           name: res?.name,
           category: res?.category,
@@ -32,35 +60,53 @@ export class MenuMasterFormComponent implements OnInit {
           price: res?.price,
           status: res?.status
         });
-        },
-        error : (e)=>{
-          this.showToast('error', e?.message || 'Something went wrong');
-        }
-      })
 
-    }
+        this.isLoading.set(false);
+      },
+      error: (e) => {
+        this.isLoading.set(false);
+        this.showToast('error', e?.error?.message || 'Failed to load menu data');
+      }
+    });
   }
-  menuForm = this.fb.group({
-  menuId :[null],
-  name: ['', Validators.required],
-  category: ['', Validators.required],
-  description: [''],
-  price: [null, Validators.required],
-  status :['ACTIVE',Validators.required]
-});
-submit(){
-  const payload = this.menuForm.getRawValue();
-  this.menuService.saveMenu(payload as any).subscribe({
-    next : (res : any) =>{
-      this.showToast('success', res?.message || 'Menu Added Successful');
-    },
-    error : (e)=>{
-      this.showToast('error', e?.message || 'Something went wrong');
-    }
-  });
-}
 
-private showToast(icon: 'success' | 'error', title: string) {
+  submit(): void {
+    if (this.menuForm.invalid) {
+      this.menuForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = this.menuForm.getRawValue();
+    this.isLoading.set(true);
+
+    const request$ = this.isEditMode()
+      ? this.menuService.updateMenu(this.editId()!, payload as any)
+      : this.menuService.saveMenu(payload as any);
+
+    request$.subscribe({
+      next: (res: any) => {
+        this.isLoading.set(false);
+        this.showToast(
+          'success',
+          res?.message || (this.isEditMode() ? 'Menu Updated Successfully' : 'Menu Added Successfully')
+        );
+
+        if (!this.isEditMode()) {
+          this.resetForm();
+        }
+      },
+      error: (e) => {
+        this.isLoading.set(false);
+        this.showToast('error', e?.error?.message || 'Something went wrong');
+      }
+    });
+  }
+
+  resetForm(): void {
+    this.menuForm.reset({ status: 'ACTIVE' });
+  }
+
+  private showToast(icon: 'success' | 'error', title: string): void {
     Swal.fire({
       toast: true,
       position: 'top-end',
@@ -68,8 +114,7 @@ private showToast(icon: 'success' | 'error', title: string) {
       title,
       showConfirmButton: false,
       timer: 3000,
-      timerProgressBar: true,
+      timerProgressBar: true
     });
   }
-
 }
