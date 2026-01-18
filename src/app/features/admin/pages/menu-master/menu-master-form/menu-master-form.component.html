@@ -1,0 +1,91 @@
+<div class="menu-form-wrapper">
+  <!-- Title -->
+  <div class="title-bar">
+    <div>
+      <h2>Menu Master Form</h2>
+      <p>Create / Update Menu Item</p>
+    </div>
+
+    <button class="btn-orange" routerLink="/admin/menu-master">
+      ← Back to List
+    </button>
+    <!-- <button class="btn-" routerLink="/admin/menu-master/add">
+      + Add Menu
+    </button> -->
+  </div>
+
+  <!-- Card -->
+  <div class="menu-form-card">
+    <div class="card-header">
+      <h3>Menu Details</h3>
+      <span class="sub">Fill below details carefully</span>
+    </div>
+
+    <form [formGroup]="menuForm" (ngSubmit)="submit()">
+      <div class="card-body">
+        <!-- Row 1 -->
+        <div class="row">
+          <div class="col">
+            <label>Menu Name</label>
+            <input type="text" formControlName="name" placeholder="Enter menu name" />
+            <small class="error"
+              *ngIf="menuForm.get('name')?.touched && menuForm.get('name')?.invalid">
+              Name is required
+            </small>
+          </div>
+
+          <div class="col">
+            <label>Category</label>
+            <select formControlName="category">
+              <option value="">Select category</option>
+              <option>Beverages</option>
+              <option>Starters</option>
+              <option>Main Course</option>
+              <option>Dessert</option>
+            </select>
+            <small class="error"
+              *ngIf="menuForm.get('category')?.touched && menuForm.get('category')?.invalid">
+              Category is required
+            </small>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row">
+          <div class="col">
+            <label>Price (₹)</label>
+            <input type="number" formControlName="price" placeholder="Enter price" />
+            <small class="error"
+              *ngIf="menuForm.get('price')?.touched && menuForm.get('price')?.invalid">
+              Price is required
+            </small>
+          </div>
+
+          <div class="col">
+            <label>Status</label>
+            <select formControlName="status">
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="INACTIVE">INACTIVE</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Full Width -->
+        <div class="row">
+          <div class="col full">
+            <label>Description</label>
+            <textarea formControlName="description" placeholder="Enter description"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <button type="reset" class="btn-gray">Reset</button>
+        <button type="submit" class="btn-orange" [disabled]="menuForm.invalid">
+          Save Menu
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

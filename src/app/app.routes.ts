@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  // ✅ Public Layout (Navbar + Footer)
+  // ✅ Public Layout
   {
     path: '',
     loadComponent: () =>
@@ -17,7 +17,7 @@ export const routes: Routes = [
     ],
   },
 
-  // ✅ Auth Layout (Login/Register without navbar/footer)
+  // ✅ Auth Layout
   {
     path: 'auth',
     loadComponent: () =>
@@ -29,6 +29,22 @@ export const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
+      },
+    ],
+  },
+
+  // ✅ Admin Layout
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./layouts/admin-layout/admin-layout.component').then(
+        (m) => m.AdminLayoutComponent
+      ),
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
       },
     ],
   },

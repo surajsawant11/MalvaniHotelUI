@@ -1,0 +1,123 @@
+.menu-master-page {
+  padding: 18px 10px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f1f1f;
+  margin: 0;
+}
+
+/* Add button (theme matching) */
+.btn-primary {
+  background: #e26a00;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #c75d00;
+}
+
+/* Card */
+.table-card {
+  background: #ffffff;
+  border: 1px solid #ededed;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* Table */
+.menu-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.menu-table thead {
+  background: #f7f7f7;
+}
+
+.menu-table th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2c2c2c;
+  padding: 12px 14px;
+  border-bottom: 1px solid #ececec;
+}
+
+.menu-table td {
+  font-size: 13px;
+  color: #3a3a3a;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.menu-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.name {
+  font-weight: 700;
+}
+
+.desc {
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.price {
+  font-weight: 700;
+}
+
+/* Action Buttons */
+.btn-action {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 0 4px;
+}
+
+.btn-edit {
+  background: #f1f1f1;
+  color: #222;
+}
+
+.btn-edit:hover {
+  background: #e4e4e4;
+}
+
+.btn-delete {
+  background: #ffefef;
+  color: #e11d48;
+}
+
+.btn-delete:hover {
+  background: #ffe0e0;
+}

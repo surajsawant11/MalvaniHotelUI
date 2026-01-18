@@ -1,0 +1,52 @@
+<div class="menu-master-page">
+  <div class="top-bar">
+    <h2 class="page-title">Users Master List</h2>
+
+    <button class="btn-primary" routerLink="/admin/users-master/add">
+      + Add User
+    </button>
+  </div>
+
+  <div class="table-card">
+    <table class="menu-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <!-- <th>Menu ID</th> -->
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Role</th>
+          <th>Created By</th>
+          <th>Created Date</th>
+          <th>Updated By</th>
+          <th>Updated Date</th>
+          <th class="text-right">Action</th>
+          
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- <tr *ngFor="let menu of menuList; let i = index">
+          <td>{{ i + 1 }}</td>
+           <td>{{ menu.menuId }}</td>
+          <td class="name">{{ menu.name }}</td>
+          <td>{{ menu.category }}</td>
+          <td class="desc">{{ menu.description || '-' }}</td>
+          <td class="price">₹{{ menu.price }}</td>
+          <td >{{ menu.status }}</td>
+
+          <td class="text-center">
+            <button class="btn-action btn-edit" (click)="onEdit(menu.menuId)">
+              Edit
+            </button>
+
+            <button class="btn-action btn-delete" (click)="onDelete(menu.menuId)">
+              Remove
+            </button>
+          </td>
+        </tr> -->
+      </tbody>
+    </table>
+  </div>
+</div>

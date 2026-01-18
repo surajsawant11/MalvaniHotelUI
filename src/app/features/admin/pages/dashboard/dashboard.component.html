@@ -1,0 +1,70 @@
+<div class="dashboard">
+  <div class="header">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome back! Here’s what’s happening today.</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of stats">
+      <div class="stat-icon">{{ stat.icon }}</div>
+      <div class="stat-content">
+        <h3>{{ stat.title }}</h3>
+        <h2>{{ stat.value }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+
+    <div class="actions-grid">
+      <button class="action-btn">➕ Add Menu Item</button>
+      <button class="action-btn">📦 View Orders</button>
+      <button class="action-btn">👥 Manage Users</button>
+      <button class="action-btn">⚙️ Settings</button>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="orders">
+    <div class="orders-header">
+      <h2>Recent Orders</h2>
+      <button class="view-all-btn">View All</button>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let order of recentOrders">
+            <td>{{ order.id }}</td>
+            <td>{{ order.customer }}</td>
+            <td>{{ order.amount }}</td>
+            <td>
+              <span
+                class="status"
+                [ngClass]="{
+                  delivered: order.status === 'Delivered',
+                  pending: order.status === 'Pending',
+                  cancelled: order.status === 'Cancelled'
+                }"
+              >
+                {{ order.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -12,13 +12,24 @@
       <a routerLink="/menu" routerLinkActive="active">Menu</a>
       <a routerLink="/gallery" routerLinkActive="active">Gallery</a>
       <a routerLink="/contact" routerLinkActive="active">Contact</a>
+
+      <a routerLink="/menumaster" routerLinkActive="active">MenuMaster</a>
+
     </nav>
 
     <!-- Desktop Auth Buttons -->
-    <div class="auth-buttons">
-      <a class="btn btn-outline" routerLink="/auth/login">Login</a>
-      <a class="btn btn-fill" routerLink="/auth/register">Register</a>
-    </div>
+<div class="auth-buttons" *ngIf="!isLoggedIn; else loggedInBlockDesktop">
+  <a class="btn btn-outline" routerLink="/auth/login">Login</a>
+  <a class="btn btn-fill" routerLink="/auth/register">Register</a>
+</div>
+
+<ng-template #loggedInBlockDesktop>
+  <div class="auth-buttons user-info">
+    <span class="welcome-text">Hi, {{ userName || 'User' }}</span>
+    <button class="btn btn-outline" (click)="onLogout()">Logout</button>
+  </div>
+</ng-template>
+
 
     <!-- Mobile hamburger -->
     <button class="hamburger" (click)="toggleMenu()">
@@ -33,10 +44,19 @@
     <a routerLink="/menu" (click)="closeMenu()">Menu</a>
     <a routerLink="/gallery" (click)="closeMenu()">Gallery</a>
     <a routerLink="/contact" (click)="closeMenu()">Contact</a>
+     <a routerLink="/menu-master-list" (click)="closeMenu()">MenuMaster</a>
 
-    <div class="mobile-auth">
-      <a class="btn btn-outline" routerLink="/auth/login" (click)="closeMenu()">Login</a>
-      <a class="btn btn-fill" routerLink="/auth/register" (click)="closeMenu()">Register</a>
-    </div>
+    <div class="mobile-auth" *ngIf="!isLoggedIn; else loggedInBlockMobile">
+  <a class="btn btn-outline" routerLink="/auth/login" (click)="closeMenu()">Login</a>
+  <a class="btn btn-fill" routerLink="/auth/register" (click)="closeMenu()">Register</a>
+</div>
+
+<ng-template #loggedInBlockMobile>
+  <div class="mobile-auth user-info">
+    <span class="welcome-text">Hi, {{ userName || 'User' }}</span>
+    <button class="btn btn-outline" (click)="onLogout(); closeMenu()">Logout</button>
+  </div>
+</ng-template>
+
   </div>
 </header>

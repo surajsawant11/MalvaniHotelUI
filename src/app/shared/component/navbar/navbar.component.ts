@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../features/auth/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +11,36 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  isMenuOpen = false;
+  // isMenuOpen = false;
+
+  // toggleMenu() {
+  //   this.isMenuOpen = !this.isMenuOpen;
+  // }
+
+  // closeMenu() {
+  //   this.isMenuOpen = false;
+  // }
+
+isMenuOpen = false;
+
+  isLoggedIn = false;
+  userName: string | null = null;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+  this.authService.loggedIn$.subscribe(val => this.isLoggedIn = val);
+  this.authService.userName$.subscribe(name => this.userName = name);
+}
+
+
+  loadUserData() {
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.userName = this.authService.getName();
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -19,4 +49,12 @@ export class NavbarComponent {
   closeMenu() {
     this.isMenuOpen = false;
   }
+
+  onLogout() {
+    this.authService.logout();
+    this.loadUserData(); // refresh navbar data
+    this.router.navigateByUrl('/');
+  }
+
+
 }

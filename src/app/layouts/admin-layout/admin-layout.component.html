@@ -1,0 +1,88 @@
+<div class="admin">
+  <!-- Sidebar -->
+  <aside class="side" [class.side--open]="isSidebarOpen" [class.side--collapsed]="isCollapsed">
+    <div class="side__top">
+      <div class="brand" (click)="isCollapsed = !isCollapsed">
+        <div class="brand__logo">🍤</div>
+        <div class="brand__text" *ngIf="!isCollapsed">
+          <div class="brand__title">Malvani</div>
+          <div class="brand__sub">Admin Panel</div>
+        </div>
+      </div>
+
+      <button class="btn-icon side__close" (click)="isSidebarOpen=false">✕</button>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span class="nav__icon">🏠</span>
+        <span class="nav__label" *ngIf="!isCollapsed">Dashboard</span>
+      </a>
+
+      <a routerLink="/admin/menu-master" routerLinkActive="active">
+        <span class="nav__icon">🍽️</span>
+        <span class="nav__label" *ngIf="!isCollapsed">Menu Master</span>
+      </a>
+
+      <a routerLink="/admin/orders" routerLinkActive="active">
+        <span class="nav__icon">📦</span>
+        <span class="nav__label" *ngIf="!isCollapsed">Orders</span>
+      </a>
+
+      <a routerLink="/admin/users-master" routerLinkActive="active">
+        <span class="nav__icon">👥</span>
+        <span class="nav__label" *ngIf="!isCollapsed">Users</span>
+      </a>
+
+      <a routerLink="/admin/settings" routerLinkActive="active">
+        <span class="nav__icon">⚙️</span>
+        <span class="nav__label" *ngIf="!isCollapsed">Settings</span>
+      </a>
+    </nav>
+
+    <div class="side__bottom" *ngIf="!isCollapsed">
+      <div class="user">
+        <div class="user__avatar">{{ (userName || 'A')[0] }}</div>
+        <div class="user__meta">
+          <div class="user__name">{{ userName || 'Admin' }}</div>
+          <div class="user__role">Administrator</div>
+        </div>
+      </div>
+
+      <button class="btn-logout" (click)="onLogout()">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Overlay for mobile -->
+  <div class="overlay" *ngIf="isSidebarOpen" (click)="isSidebarOpen=false"></div>
+
+  <!-- Main -->
+  <section class="main">
+    <!-- Topbar -->
+    <header class="top">
+      <div class="top__left">
+        <button class="btn-icon" (click)="isSidebarOpen=true">☰</button>
+        <div class="crumb">
+          <span class="crumb__title">Admin</span>
+          <span class="crumb__sub">Manage Application</span>
+        </div>
+      </div>
+
+      <div class="top__right">
+        <div class="search">
+          <input type="text" placeholder="Search..." />
+        </div>
+
+        <div class="top-user">
+          <div class="top-user__avatar">{{ (userName || 'A')[0] }}</div>
+          <span class="top-user__name">{{ userName || 'Admin' }}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page -->
+    <main class="page">
+      <router-outlet></router-outlet>
+    </main>
+  </section>
+</div>

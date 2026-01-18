@@ -31,6 +31,11 @@
     font-weight: 500;
     color: #333;
     padding: 6px 2px;
+    transition: 0.2s ease;
+  }
+
+  a:hover {
+    color: #d35400;
   }
 
   a.active {
@@ -42,6 +47,7 @@
 .auth-buttons {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .btn {
@@ -50,16 +56,60 @@
   border-radius: 8px;
   font-weight: 600;
   font-size: 14px;
+  transition: 0.25s ease;
 }
 
 .btn-outline {
   border: 1px solid #d35400;
   color: #d35400;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: rgba(211, 84, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .btn-fill {
   background: #d35400;
   color: #fff;
+  border: 1px solid #d35400;
+}
+
+.btn-fill:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* ✅ Logged-in UI styles */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.welcome-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #d35400;
+  background: rgba(211, 84, 0, 0.08);
+  padding: 7px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* Optional Avatar */
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  background: #d35400;
+  box-shadow: 0 4px 10px rgba(211, 84, 0, 0.25);
 }
 
 .hamburger {
@@ -82,6 +132,11 @@
     text-decoration: none;
     color: #333;
     font-weight: 500;
+    transition: 0.2s ease;
+  }
+
+  a:hover {
+    color: #d35400;
   }
 }
 
@@ -89,6 +144,23 @@
   display: flex;
   gap: 10px;
   margin-top: 10px;
+}
+
+/* ✅ Mobile user info improvements */
+.mobile-auth.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-auth.user-info .welcome-text {
+  width: 100%;
+  text-align: center;
+}
+
+.mobile-auth.user-info .btn {
+  width: 100%;
+  text-align: center;
 }
 
 /* ✅ Responsive */

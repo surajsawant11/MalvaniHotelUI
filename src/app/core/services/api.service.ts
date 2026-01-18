@@ -17,4 +17,8 @@ export class ApiService {
   get<T>(url: string) {
     return this.http.get<T>(`${this.baseUrl}${url}`);
   }
+  
+  delete<T>(url : string){
+    return this.http.delete<T>(`${this.baseUrl}${url}`);
+  }
 }

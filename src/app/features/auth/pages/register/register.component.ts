@@ -8,7 +8,8 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService, RegisterPayload } from '../../services/auth.service';
+import Swal from 'sweetalert2';
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
@@ -40,7 +41,7 @@ export class RegisterComponent {
     { validators: passwordMatchValidator }
   );
 
-  constructor(private fb: FormBuilder, private authService:AuthService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) { }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -58,14 +59,37 @@ export class RegisterComponent {
 
     // console.log('Register Data:', this.registerForm.value);
     // alert('Registration successful ✅ (connect API later)');
-    this.authService.register(this.registerForm.value as any).subscribe({
-      next : () =>{
-        alert('success');
-      },
-      error : () =>{
-        alert('wrong');
-      }
-    })
+    this.authService.register(this.registerForm.value as RegisterPayload).subscribe({
+  next: (res: any) => {
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: res?.message || 'User Added Successfully',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
+  },
+  error: (e) => {
+
+    const msg =
+      e?.error?.message ||
+      e?.error ||
+      'Something went wrong';
+
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'error',
+      title: msg,
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
+  }
+});
+
 
     // this.registerForm.reset();
   }

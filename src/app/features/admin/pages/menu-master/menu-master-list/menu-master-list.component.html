@@ -1,0 +1,65 @@
+<div class="menu-master-page">
+
+  <div class="top-bar">
+    <h2 class="page-title">Menu Master List</h2>
+
+    <button class="btn-primary" routerLink="/admin/menu-master/add">
+      + Add Menu
+    </button>
+  </div>
+
+  <!-- ✅ Loading -->
+  <div *ngIf="isLoading()" class="loading-box">
+    Loading menu list...
+  </div>
+
+  <!-- ✅ Empty -->
+  <div *ngIf="!isLoading() && menuList().length === 0" class="empty-box">
+    No menu items found.
+  </div>
+
+  <!-- ✅ Table -->
+  <div *ngIf="!isLoading() && menuList().length > 0" class="table-card">
+    <table class="menu-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th class="text-center">Price</th>
+          <th class="text-center">Status</th>
+          <th class="text-right">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let menu of menuList(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td class="name">{{ menu.name }}</td>
+          <td>{{ menu.category }}</td>
+          <td class="desc">{{ menu.description || '-' }}</td>
+          <td class="price text-center">₹{{ menu.price }}</td>
+          <td class="text-center">{{ menu.status }}</td>
+
+          <td class="text-right">
+            <button
+              type="button"
+              class="btn-action btn-edit"
+              (click)="onEdit(menu.menuId)">
+              Edit
+            </button>
+
+            <button
+              type="button"
+              class="btn-action btn-delete"
+              (click)="onDelete(menu.menuId)">
+              Remove
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
