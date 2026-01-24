@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserModel } from '../model/userModel';
 import { UsersMasterService } from '../services/users-master.service';
 import Swal from 'sweetalert2';
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-user-master-list',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [ CommonModule],
   templateUrl: './user-master-list.component.html',
   styleUrl: './user-master-list.component.css'
 })

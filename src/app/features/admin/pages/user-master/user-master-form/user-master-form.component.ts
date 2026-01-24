@@ -2,13 +2,12 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UsersMasterService } from '../services/users-master.service';
-import { NgIf } from '@angular/common'; 
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-master-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, NgIf],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './user-master-form.component.html',
   styleUrl: './user-master-form.component.css'
 })
