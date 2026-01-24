@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserModel } from '../model/userModel';
 import { UsersMasterService } from '../services/users-master.service';
 import Swal from 'sweetalert2';
@@ -13,16 +13,39 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-master-list.component.css'
 })
 export class UserMasterListComponent implements OnInit {
-onDelete(arg0: any) {
-throw new Error('Method not implemented.');
-}
-onEdit(arg0: any) {
-throw new Error('Method not implemented.');
+onDelete(userId: number | undefined) {
+    if (!userId) return;
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This menu item will be removed permanently!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e26a00',
+      cancelButtonColor: '#888',
+      confirmButtonText: 'Yes, Remove'
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.userService.deleteUser(userId).subscribe({
+        next: (res: any) => {
+          this.showToast('success', res?.message || 'Menu removed successfully');
+          this.fetchUserList();
+        },
+        error: (e) => {
+          this.showToast('error', e?.error?.message || 'Failed to remove menu');
+        }
+      });
+    });
+  }
+onEdit(userId: number) {
+   if (!userId) return;
+    this.router.navigate(['/admin/users-master/edit', userId]);
 }
   userList =  signal<UserModel[]>([]);
   isLoading = signal<boolean>(false);
 
-  constructor(private userService : UsersMasterService){};
+  constructor(private userService : UsersMasterService, private  router :Router){};
   ngOnInit(): void {
     this.fetchUserList();
   }

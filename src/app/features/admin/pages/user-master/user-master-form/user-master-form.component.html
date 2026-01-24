@@ -1,1 +1,109 @@
-<p>user-master-form works!</p>
+<div class="master-form-wrapper">
+
+  <!-- Header -->
+  <div class="page-title-bar">
+    <div>
+      <h2>User Master Form</h2>
+      <p>{{ isEditMode() ? 'Update User' : 'Create User' }}</p>
+    </div>
+
+    <button class="btn-primary" routerLink="/admin/users-master">
+      ← Back to List
+    </button>
+  </div>
+
+  <!-- Card -->
+  <div class="form-card">
+    <div class="card-header">
+      <h3>User Details</h3>
+      <span class="sub">Fill below details carefully</span>
+    </div>
+
+    <form [formGroup]="userForm" (ngSubmit)="submit()">
+
+      <div class="card-body">
+
+        <div class="form-row">
+
+          <!-- Name -->
+          <div class="form-col">
+            <label>Name</label>
+            <input type="text" formControlName="name" placeholder="Enter name" />
+
+            @if (userForm.controls.name.touched && userForm.controls.name.invalid) {
+              <small class="error">Name is required</small>
+            }
+          </div>
+
+          <!-- Phone -->
+          <div class="form-col">
+            <label>Phone</label>
+            <input
+              type="text"
+              formControlName="phone"
+              placeholder="Enter phone"
+              maxlength="10"
+              inputmode="numeric"
+              autocomplete="tel"
+            />
+
+            @if (userForm.controls.phone.touched && userForm.controls.phone.invalid) {
+              @if (userForm.controls.phone.errors?.['required']) {
+                <small class="error">Phone is required</small>
+              }
+              @if (userForm.controls.phone.errors?.['pattern']) {
+                <small class="error">Phone number must be 10 digits</small>
+              }
+            }
+          </div>
+
+        </div>
+
+        <div class="form-row">
+
+          <!-- Email -->
+          <div class="form-col">
+            <label>Email</label>
+            <input type="email" formControlName="email" placeholder="Enter email" />
+
+            @if (userForm.controls.email.touched && userForm.controls.email.invalid) {
+              @if(userForm.controls.email.errors?.['required']){
+                  <small class="error">Email is required</small>
+              } @else if (userForm.controls.email.errors?.['email'] ) {
+                <small class="error">Invalid email address</small>
+              }
+              
+              
+            }
+          </div>
+
+          <!-- Role -->
+          <div class="form-col">
+            <label>Role</label>
+            <select formControlName="role">
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card-footer">
+        <button type="button" class="btn-secondary" (click)="resetForm()">
+          Reset
+        </button>
+
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="userForm.invalid || isLoading()">
+          {{ isEditMode() ? 'Update' : 'Save' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
