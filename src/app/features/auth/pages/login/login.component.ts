@@ -13,11 +13,12 @@ import Swal from 'sweetalert2';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+
   showPassword = false;
 
   loginForm = this.fb.group({
-    email: ['s@gmail.com', [Validators.required, Validators.email]],
-    password: ['123456', [Validators.required, Validators.minLength(6)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   constructor(
@@ -26,24 +27,30 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  togglePassword() {
+  togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
-  submit() {
+  submit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
 
-    const payload = this.loginForm.getRawValue(); // ✅ no "as any"
+    const payload = this.loginForm.getRawValue();
 
-    this.authService.login(payload as any) .subscribe({
+    this.authService.login(payload as any).subscribe({
       next: (res: any) => {
         this.showToast('success', res?.message || 'Login Successful');
 
-        // ✅ optional redirect
-        this.router.navigate(['/dashboard']);
+        const role = this.authService.getRole();
+
+        // ✅ Role-based redirect (IMPORTANT)
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin/dashboard']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
       },
       error: (e) => {
         const msg = e?.error?.message || e?.error || 'Something went wrong';
@@ -52,7 +59,7 @@ export class LoginComponent {
     });
   }
 
-  private showToast(icon: 'success' | 'error', title: string) {
+  private showToast(icon: 'success' | 'error', title: string): void {
     Swal.fire({
       toast: true,
       position: 'top-end',

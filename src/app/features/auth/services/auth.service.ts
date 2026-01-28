@@ -91,4 +91,17 @@ export class AuthService {
     this.loggedInSubject.next(false);
     this.userNameSubject.next(null);
   }
+
+  getRole(): string | null {
+  return localStorage.getItem(this.roleKey);
+}
+
+isAdmin(): boolean {
+  return this.getRole() === 'ADMIN';
+}
+
+isUser(): boolean {
+  return this.getRole() === 'USER';
+}
+
 }

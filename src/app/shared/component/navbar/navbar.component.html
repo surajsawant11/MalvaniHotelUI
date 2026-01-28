@@ -7,13 +7,11 @@
 
     <!-- Desktop Links -->
     <nav class="nav-links">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-      <a routerLink="/about" routerLinkActive="active">About</a>
-      <a routerLink="/menu" routerLinkActive="active">Menu</a>
-      <a routerLink="/gallery" routerLinkActive="active">Gallery</a>
-      <a routerLink="/contact" routerLinkActive="active">Contact</a>
-
-      <a routerLink="/menumaster" routerLinkActive="active">MenuMaster</a>
+      <a routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="about" routerLinkActive="active">About</a>
+      <a routerLink="menu" routerLinkActive="active">Menu</a>
+      <a routerLink="gallery" routerLinkActive="active">Gallery</a>
+      <a routerLink="contact" routerLinkActive="active">Contact</a>
 
     </nav>
 
@@ -39,12 +37,11 @@
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" *ngIf="isMenuOpen">
-    <a routerLink="/" (click)="closeMenu()">Home</a>
-    <a routerLink="/about" (click)="closeMenu()">About</a>
-    <a routerLink="/menu" (click)="closeMenu()">Menu</a>
-    <a routerLink="/gallery" (click)="closeMenu()">Gallery</a>
-    <a routerLink="/contact" (click)="closeMenu()">Contact</a>
-     <a routerLink="/menu-master-list" (click)="closeMenu()">MenuMaster</a>
+    <a routerLink="dashboard" (click)="closeMenu()">Home</a>
+    <a routerLink="about" (click)="closeMenu()">About</a>
+    <a routerLink="menu" (click)="closeMenu()">Menu</a>
+    <a routerLink="gallery" (click)="closeMenu()">Gallery</a>
+    <a routerLink="contact" (click)="closeMenu()">Contact</a>
 
     <div class="mobile-auth" *ngIf="!isLoggedIn; else loggedInBlockMobile">
   <a class="btn btn-outline" routerLink="/auth/login" (click)="closeMenu()">Login</a>

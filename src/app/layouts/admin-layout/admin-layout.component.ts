@@ -23,7 +23,7 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   onLogout() {
-    this.auth.logout();
-    this.router.navigateByUrl('/');
-  }
+  this.auth.logout();
+  this.router.navigateByUrl('/auth/login');
+}
 }

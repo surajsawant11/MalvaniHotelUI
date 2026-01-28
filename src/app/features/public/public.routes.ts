@@ -2,10 +2,11 @@ import { Routes } from '@angular/router';
 
 export const PUBLIC_ROUTES: Routes = [
   {
-    path: '',
+    path: 'dashboard',
     loadComponent: () =>
       import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
+  
   {
     path: 'about',
     loadComponent: () =>
@@ -25,5 +26,10 @@ export const PUBLIC_ROUTES: Routes = [
     path: 'contact',
     loadComponent: () =>
       import('./pages/contact/contact.component').then((m) => m.ContactComponent),
+  },
+  {
+    path: '',
+    redirectTo: '/public/dashboard',
+    pathMatch: 'full',
   },
 ];

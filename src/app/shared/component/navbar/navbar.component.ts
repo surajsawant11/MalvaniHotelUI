@@ -51,10 +51,10 @@ isMenuOpen = false;
   }
 
   onLogout() {
-    this.authService.logout();
-    this.loadUserData(); // refresh navbar data
-    this.router.navigateByUrl('/');
-  }
+  this.authService.logout();
+  this.router.navigateByUrl('/auth/login');
+}
+
 
 
 }
