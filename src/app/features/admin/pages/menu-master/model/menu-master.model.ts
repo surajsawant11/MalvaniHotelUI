@@ -7,4 +7,5 @@ export interface MenuItem {
   imageUrl?: string;
   available: boolean;
   status: 'ACTIVE' | 'INACTIVE';
+  image?:File|null;
 }

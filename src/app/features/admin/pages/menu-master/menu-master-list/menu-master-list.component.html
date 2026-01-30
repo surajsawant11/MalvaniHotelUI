@@ -29,6 +29,7 @@
           <th>Description</th>
           <th class="text-center">Price</th>
           <th class="text-center">Status</th>
+          <th class="text-center">Image</th>
           <th class="text-right">Action</th>
         </tr>
       </thead>
@@ -41,7 +42,13 @@
           <td class="desc">{{ menu.description || '-' }}</td>
           <td class="price text-center">₹{{ menu.price }}</td>
           <td class="text-center">{{ menu.status }}</td>
+          <td class="text-center">
+            <img
+  [src]="menu.imageUrl"
+  alt="{{ menu.name }}"
+  style="width:50px;height:50px;object-fit:cover;" />
 
+              </td>
           <td class="text-right">
             <button
               type="button"

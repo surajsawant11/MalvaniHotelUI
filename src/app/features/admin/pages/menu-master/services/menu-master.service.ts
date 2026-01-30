@@ -17,12 +17,12 @@ export class MenuMasterService {
   }
 
   // ✅ Save new menu item
-  saveMenu(menu: MenuItem): Observable<any> {
+  saveMenu(menu: FormData): Observable<any> {
     return this.api.post<any>('/menu/save', menu);
   }
 
   // ✅ Update menu item
-  updateMenu(menuId: number, menu: Partial<MenuItem>): Observable<any> {
+  updateMenu(menuId: number, menu: FormData): Observable<any> {
     return this.api.put<any>(`/menu/${menuId}`, menu);
     // if backend uses /menu/update then replace endpoint accordingly
   }

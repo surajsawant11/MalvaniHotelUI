@@ -14,6 +14,7 @@ import { MenuMasterService } from '../services/menu-master.service';
   styleUrl: './menu-master-form.component.css'
 })
 export class MenuMasterFormComponent implements OnInit {
+selectedFile!: File | null;
 
   // ✅ Signals
   editId = signal<number | null>(null);
@@ -33,7 +34,8 @@ export class MenuMasterFormComponent implements OnInit {
     category: ['', Validators.required],
     description: [''],
     price: [null, Validators.required],
-    status: ['ACTIVE', Validators.required]
+    status: ['ACTIVE', Validators.required],
+     image: [null as File | null]
   });
 
   ngOnInit(): void {
@@ -76,12 +78,19 @@ export class MenuMasterFormComponent implements OnInit {
       return;
     }
 
-    const payload = this.menuForm.getRawValue();
+    const formData = new FormData();
+
+Object.entries(this.menuForm.getRawValue()).forEach(([key, value]) => {
+  if (value !== null && value !== undefined) {
+    formData.append(key, value as any);
+  }
+});
+
     this.isLoading.set(true);
 
     const request$ = this.isEditMode()
-      ? this.menuService.updateMenu(this.editId()!, payload as any)
-      : this.menuService.saveMenu(payload as any);
+      ? this.menuService.updateMenu(this.editId()!, formData)
+      : this.menuService.saveMenu(formData );
 
     request$.subscribe({
       next: (res: any) => {
@@ -117,4 +126,16 @@ export class MenuMasterFormComponent implements OnInit {
       timerProgressBar: true
     });
   }
+
+  onFileChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+
+  if (input.files && input.files.length > 0) {
+    this.selectedFile = input.files[0];
+
+    // store file in form
+   this.menuForm.patchValue({ image: this.selectedFile });
+
+  }
+}
 }
