@@ -14,18 +14,20 @@ import { MenuMasterService } from '../services/menu-master.service';
   styleUrl: './menu-master-form.component.css'
 })
 export class MenuMasterFormComponent implements OnInit {
-selectedFile!: File | null;
+  selectedFile!: File | null;
 
   // ✅ Signals
   editId = signal<number | null>(null);
   isEditMode = signal<boolean>(false);
   isLoading = signal<boolean>(false);
+  previewImage: string | null = null;
+
 
   constructor(
     private fb: FormBuilder,
     private menuService: MenuMasterService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   // ✅ Reactive Form
   menuForm = this.fb.group({
@@ -35,7 +37,8 @@ selectedFile!: File | null;
     description: [''],
     price: [null, Validators.required],
     status: ['ACTIVE', Validators.required],
-     image: [null as File | null]
+    image: [null as File | null],
+    imageUrl: ['']
   });
 
   ngOnInit(): void {
@@ -48,6 +51,33 @@ selectedFile!: File | null;
       this.loadMenuById(id);
     }
   }
+  onFileChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+
+    // JPG only
+    if (file.type !== 'image/jpeg') {
+      this.showToast('error', 'Only JPG images allowed');
+      input.value = '';
+      return;
+    }
+
+    this.selectedFile = file;
+
+    // store file in form
+    this.menuForm.patchValue({ image: file });
+
+    // 👇 instant frontend preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImage = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
 
   private loadMenuById(id: number): void {
     this.isLoading.set(true);
@@ -60,9 +90,10 @@ selectedFile!: File | null;
           category: res?.category,
           description: res?.description,
           price: res?.price,
-          status: res?.status
+          status: res?.status,
+          imageUrl: res?.imageUrl
         });
-
+        this.previewImage = res?.imageUrl || null;
         this.isLoading.set(false);
       },
       error: (e) => {
@@ -80,29 +111,36 @@ selectedFile!: File | null;
 
     const formData = new FormData();
 
-Object.entries(this.menuForm.getRawValue()).forEach(([key, value]) => {
-  if (value !== null && value !== undefined) {
-    formData.append(key, value as any);
-  }
-});
+    Object.entries(this.menuForm.getRawValue()).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        formData.append(key, value as any);
+      }
+    });
 
     this.isLoading.set(true);
 
     const request$ = this.isEditMode()
       ? this.menuService.updateMenu(this.editId()!, formData)
-      : this.menuService.saveMenu(formData );
+      : this.menuService.saveMenu(formData);
 
     request$.subscribe({
       next: (res: any) => {
         this.isLoading.set(false);
+
         this.showToast(
           'success',
           res?.message || (this.isEditMode() ? 'Menu Updated Successfully' : 'Menu Added Successfully')
         );
 
-        if (!this.isEditMode()) {
+        if (this.isEditMode()) {
+          this.loadMenuById(this.editId()!);
+        } else {
           this.resetForm();
+          this.previewImage = null;
         }
+
+
+        // this.loadMenuById(this.editId()!);
       },
       error: (e) => {
         this.isLoading.set(false);
@@ -127,15 +165,4 @@ Object.entries(this.menuForm.getRawValue()).forEach(([key, value]) => {
     });
   }
 
-  onFileChange(event: Event): void {
-  const input = event.target as HTMLInputElement;
-
-  if (input.files && input.files.length > 0) {
-    this.selectedFile = input.files[0];
-
-    // store file in form
-   this.menuForm.patchValue({ image: this.selectedFile });
-
-  }
-}
 }

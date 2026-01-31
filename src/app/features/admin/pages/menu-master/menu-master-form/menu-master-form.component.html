@@ -75,10 +75,16 @@
           </div>
         </div>
 
+        <div class="row" *ngIf="previewImage">
+          <div class="col full">
+            <img [src]="previewImage" style="max-width:200px; border-radius:8px; margin-top:10px;" />
+          </div>
+        </div>
+
         <div class="row">
           <div class="col full">
             <label>Image</label>
-            <input type="file" accept="image/*" (change)="onFileChange($event)" />
+            <input type="file" accept=".jpg" (change)="onFileChange($event)" />
           </div>
         </div>
 
