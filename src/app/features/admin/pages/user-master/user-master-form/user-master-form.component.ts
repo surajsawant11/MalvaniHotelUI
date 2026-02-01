@@ -3,17 +3,20 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UsersMasterService } from '../services/users-master.service';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-master-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule],
   templateUrl: './user-master-form.component.html',
   styleUrl: './user-master-form.component.css'
 })
 export class UserMasterFormComponent implements OnInit{
 // menuForm: any;
 editId = signal<number | null>(null);
+previewImage: string | null =null;
+selectedFile!: File | null;
 
 resetForm() {
   this.userForm.reset({
@@ -53,10 +56,13 @@ resetForm() {
           name: res?.name,
           phone: res?.phone,
           email: res?.email,
-          role: res?.role
+          role: res?.role,
+          imageUrl: res?.imageUrl || null
+          
         });
 
         this.isLoading.set(false);
+        this.previewImage = res?.imageUrl || null;
       },
       error: (e : any) => {
         this.isLoading.set(false);
@@ -70,7 +76,9 @@ resetForm() {
     name :['',[Validators.required]],
     phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
     email : ['', [Validators.email, Validators.required ]],
-    role : ['USER', Validators.required]
+    role : ['USER', Validators.required],
+    image: [null as File | null],
+    imageUrl:[null as String|null]
   })
 
   submit() {
@@ -80,10 +88,16 @@ resetForm() {
   }
 
   this.isLoading.set(true);
+  const formData = new FormData();
+  Object.entries(this.userForm.getRawValue()).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        formData.append(key, value as any);
+      }
+    });
 
   const request$ = this.isEditMode()
-    ? this.usersService.updateUser(this.editId()!, this.userForm.getRawValue())
-    : this.usersService.saveUser(this.userForm.getRawValue());
+    ? this.usersService.updateUser(this.editId()!, formData)
+    : this.usersService.saveUser(formData);
 
   request$.subscribe({
     next: (res) => {
@@ -116,4 +130,31 @@ private showToast(icon: 'success' | 'error', title: string): void {
       timerProgressBar: true
     });
   }
+
+  onFileChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+
+    // JPG only
+    if (file.type !== 'image/jpeg') {
+      this.showToast('error', 'Only JPG images allowed');
+      input.value = '';
+      return;
+    }
+
+    this.selectedFile = file;
+
+    // store file in form
+    this.userForm.patchValue({ image: file });
+
+    // 👇 instant frontend preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImage = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+}
 }

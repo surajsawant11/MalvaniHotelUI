@@ -9,4 +9,5 @@ export interface UserModel{
     updatedBy:string;
     role : 'ADMIN'|'USER';
     message : string;
+    imageUrl?:string;
 }

@@ -18,11 +18,11 @@ export class UsersMasterService {
     return this.api.get<UserModel[]>('/users')
   }
 
-  saveUser( userForm: any) {
+  saveUser( userForm: FormData) {
       return this.api.post<UserModel>('/users', userForm);
   }
 
-  updateUser( userId : number , userForm : any){
+  updateUser( userId : number , userForm : FormData){
      return this.api.put<UserModel>(`/users/${userId}`, userForm);
   }
 

@@ -17,6 +17,7 @@
           <th>Email</th>
           <th>Phone</th>
           <th>Role</th>
+          <th class="text-center">Profile</th>
           <th>Created By</th>
           <th>Created Date</th>
           <th>Updated By</th>
@@ -33,12 +34,15 @@
           <td>{{ user.email }}</td>
           <td>{{ user.phone }}</td>
           <td>{{ user.role }}</td>
+          <td class="text-center">
+            <img [src]="user.imageUrl" alt="{{ user.name }}" style="width:50px;height:50px;object-fit:cover;" />
+          </td>
           <td >{{ user.createdBy }}</td>
           <td >{{ user.createdDt | date:'short'}}</td>
-          <td >{{ user.updatedBy}}</td>
+          <td >{{ user.updatedBy}}</td> 
           <td >{{ user.updatedDt | date:'short'}}</td>
 
-          <td class="text-center">
+          <td class="text-left">
             <button class="btn-action btn-edit" (click)="onEdit(user.userId)">
               Edit
             </button>
